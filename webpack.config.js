@@ -42,6 +42,27 @@ module.exports =  () => {
       new MiniCssExtractPlugin({
         filename: isProduction ? 'bundle.[contenthash].css' : 'bundle.[hash].css'
       })
-    ]
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.s[ac]ss$/i,
+          use: [
+            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+            'css-loader',
+            'sass-loader'
+          ]
+        },
+        {
+          test: /\.ts(x?)$/,
+          exclude: /(node_modules)/,
+          use: [
+            {
+              loader: 'ts-loader',
+            }
+          ]
+        },
+      ]
+    }
   }
 }
