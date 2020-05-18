@@ -5,7 +5,7 @@
     // "source.organizeImports": true,
   },
   "path-intellisense.mappings": {
-    "@": "${workspaceRoot}/frontend/src"
+    "@": "${workspaceRoot}/src"
   },
   "files.exclude": {
     "**/.git/objects/**": true,
