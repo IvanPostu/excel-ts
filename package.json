@@ -1,0 +1,21 @@
+{
+  "name": "excel-ts",
+  "version": "1.0.0",
+  "description": "Pure TypeScript Excel Application",
+  "main": "index.js",
+  "private": true,
+  "typings": "./index.d.ts",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [
+    "typescript",
+    "excel"
+  ],
+  "author": "IvanPostu <ipostu20000127@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
