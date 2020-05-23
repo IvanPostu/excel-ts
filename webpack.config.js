@@ -81,6 +81,14 @@ module.exports =  () => {
             }
           ]
         },
+        {
+          test: /\.(png|jpe?g|gif|ttf|woff2|woff|eot)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
       ]
     }
   }

@@ -1,5 +1,18 @@
-$backgr: green;
+@import '~normalize.css';
+@import '~material-design-icons/iconfont/material-icons.css';
+
+@import "@/scss/formula.scss";
+@import "@/scss/header.scss";
+@import "@/scss/table.scss";
+@import "@/scss/toolbar.scss";
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body{
-  background: $backgr;
+  font-family: sans-serif;
+  font-size: 12px;
 }
