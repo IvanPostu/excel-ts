@@ -20,8 +20,13 @@ module.exports =  () => {
       filename: isProduction?'index.[contenthash].js':'index.[hash].js',
       path: path.resolve(__dirname, 'dist')
     },
+    devtool: isDevelopment ? 'source-map' : false,
+    devServer: {
+      port: 8000,
+      hot: true
+    },
     resolve:{
-      extensions: ['.ts'],
+      extensions: ['.ts', '.js'],
       alias: {
         '@': path.resolve(__dirname, 'src')
       }
@@ -29,7 +34,15 @@ module.exports =  () => {
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        template: './main/index.html'
+        template: './main/index.html',
+        minify: {
+          collapseWhitespace: isProduction,
+          removeComments: isProduction,
+          removeRedundantAttributes: isProduction,
+          removeScriptTypeAttributes: isProduction,
+          removeStyleLinkTypeAttributes: isProduction,
+          useShortDoctype: isProduction
+        }
       }),
       new CopyWebpackPlugin({
         patterns: [
@@ -40,7 +53,7 @@ module.exports =  () => {
         ],
       }),
       new MiniCssExtractPlugin({
-        filename: isProduction ? 'bundle.[contenthash].css' : 'bundle.[hash].css'
+        filename: isProduction ? 'bundle.[contenthash].css' : 'bundle.css'
       })
     ],
     module: {
@@ -48,7 +61,13 @@ module.exports =  () => {
         {
           test: /\.s[ac]ss$/i,
           use: [
-            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: isDevelopment,
+                reloadAll: true,
+              }
+            },
             'css-loader',
             'sass-loader'
           ]
