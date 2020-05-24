@@ -8,31 +8,39 @@
 </head>
 <body>
   <div id="root" class="container">
-    <div class="excel">
-      <div class="excel__header">
-        
-        <input type="text" class="input" value="New Table" />
 
-        <div>
-          <div class="button">
-            <i class="material-icons">delete</i>
-          </div>
-          <div class="button">
-            <i class="material-icons">exit_to_app</i>
-          </div>
+    <div class="dashboard">
+      <div class="dashboard__header">
+        <h1>Excel Dashboard</h1>
+      </div>
+      <div class="dashboard__new">
+        <div class="dashboard__view">
+          <a href="#" class="dashboard__create">
+            Create <br/> new table
+          </a>
+        </div>
+      </div>
+      <div class="dashboard__table dashboard__view">
+
+        <div class="dashboard__list-header">
+          <span>Title</span>
+          <span>Date of change</span>
         </div>
 
-      </div>
-      <div class="excel__toolbar">
-        
-      </div>
-      <div class="excel__formula">
-        
-      </div>
-      <div class="excel__table">
-        
+        <ul class="dashboard__list">
+          <li class="dashboard__record">
+            <a href="#">Table number 1</a>
+            <strong>11.11.2011</strong>
+          </li>
+          <li class="dashboard__record">
+            <a href="#">Table number 1</a>
+            <strong>11.11.2011</strong>
+          </li>
+        </ul>
+
       </div>
     </div>
+
   </div>
 </body>
 </html>

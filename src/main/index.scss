@@ -5,14 +5,8 @@
 @import "@/scss/header.scss";
 @import "@/scss/table.scss";
 @import "@/scss/toolbar.scss";
+@import "@/scss/dashboard.scss";
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body{
-  font-family: sans-serif;
-  font-size: 12px;
-}
+@import "@/scss/root.scss";
+
