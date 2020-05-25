@@ -1,12 +1,6 @@
-import {z} from '@/components/q'
 import './index.scss'
+import { Excel } from '@/components/excel/Excel'
 
-async function tick(){
-  const qq = await Promise.resolve(11)
-  z('Friend ')
-  console.log(qq);
-
-}
-
-tick()
-console.log('hi111')
+const excel = new Excel('#root', {
+  components: []
+})
