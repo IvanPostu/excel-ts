@@ -1,7 +1,7 @@
-import { DomListener } from "@/core/DomListener";
+import { DomListener } from '@/core/DomListener'
 
 export class Component extends DomListener {
-  toHTML(): string{
+  toHTML(): string {
     return ''
   }
 }

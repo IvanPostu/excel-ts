@@ -1,5 +1,3 @@
-import { Component } from "@/core/Component";
+import { Component } from '@/core/Component'
 
-export class Toolbar extends Component {
-
-}
+export class Toolbar extends Component {}

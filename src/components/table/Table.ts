@@ -1,5 +1,3 @@
-import { Component } from "@/core/Component";
+import { Component } from '@/core/Component'
 
-export class Table extends Component {
-
-}
+export class Table extends Component {}

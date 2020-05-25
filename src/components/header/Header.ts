@@ -1,5 +1,3 @@
-import { Component } from "@/core/Component";
+import { Component } from '@/core/Component'
 
-export class Header extends Component {
-
-}
+export class Header extends Component {}

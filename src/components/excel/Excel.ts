@@ -1,4 +1,4 @@
-import { Component } from "@/core/Component";
+import { Component } from '@/core/Component'
 
 export class Excel extends Component {
   /**
@@ -8,7 +8,7 @@ export class Excel extends Component {
   private components
 
   constructor(htmlId: string, options: any) {
-    super();
+    super()
     this.$el = document.querySelector(htmlId)
     this.components = options.components || []
   }
