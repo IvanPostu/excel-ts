@@ -1,5 +1,14 @@
 import { Component } from '@/core/Component'
 
-export class Formula extends Component {}
+export class Formula extends Component {
+  static className = 'excel__formula'
 
-const a = 99
+  toHTML() {
+    return `
+    <div class="formula_info">
+      fx
+    </div>
+    <div class="formula_input" contenteditable="true" spellcheck="false"></div>
+    `
+  }
+}

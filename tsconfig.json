@@ -4,6 +4,7 @@
     "allowJs": false,                       
     "module": "commonjs",
     "esModuleInterop": true,
+    "sourceMap": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
