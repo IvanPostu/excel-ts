@@ -40,6 +40,10 @@ class Dom {
     this.$el.appendChild(elm)
     return this
   }
+
+  on(eventType: string, callback: () => void) {
+    this.$el.addEventListener(eventType, callback)
+  }
 }
 
 /**
