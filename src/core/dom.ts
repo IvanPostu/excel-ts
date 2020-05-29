@@ -44,6 +44,10 @@ class Dom {
   on(eventType: string, callback: () => void) {
     this.$el.addEventListener(eventType, callback)
   }
+
+  off(eventType: string, callback: () => void) {
+    this.$el.removeEventListener(eventType, callback)
+  }
 }
 
 /**

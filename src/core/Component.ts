@@ -12,6 +12,10 @@ export class Component extends DomListener {
     this.initDOMListeners()
   }
 
+  destroy(): void {
+    this.removeDOMListeners()
+  }
+
   toHTML(): string {
     return ''
   }
