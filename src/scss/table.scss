@@ -14,9 +14,15 @@
     flex-direction: row;
     min-height: 20px;
     height: $rowHeight;
+
+    &:nth-child(1){
+      @include noTextSelect();
+    }
   }
 
   & .row_info {
+    @include noTextSelect();
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,6 +38,7 @@
   }
 
   & .column {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,6 +48,38 @@
     border: 1px solid $borderColor;
     border-top: none;
     border-left: none;
+  }
+
+  & .col_resize {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 4px;
+    background: $primaryColor;
+    opacity: 0;
+    z-index: 50;
+
+    &:hover {
+      opacity: 1!important;
+      cursor: col-resize;
+    }
+  }
+
+  & .row_resize {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: $primaryColor;
+    opacity: 0;
+    z-index: 50;
+    
+    &:hover {
+      opacity: 1!important;
+      cursor: row-resize;
+    }
   }
 
   & .cell {
@@ -57,7 +96,7 @@
 
     &.selected {
       border: none;
-      outline: 2px solid #3c74ff;
+      outline: 2px solid $primaryColor;
       z-index: 2;
     }
   }

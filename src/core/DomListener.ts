@@ -1,7 +1,7 @@
 import { $ } from '@/core/dom'
 
 export class DomListener {
-  private $root: ReturnType<typeof $>
+  public $root: ReturnType<typeof $>
   private listeners: Array<string>
   /**
    *
