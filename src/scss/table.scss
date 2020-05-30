@@ -14,9 +14,14 @@
     flex-direction: row;
     min-height: 20px;
     height: $rowHeight;
+
+    &:nth-child(1){
+      @include noTextSelect();
+    }
   }
 
   & .row_info {
+    @include noTextSelect();
     position: relative;
     display: flex;
     justify-content: center;
@@ -53,9 +58,10 @@
     width: 4px;
     background: $primaryColor;
     opacity: 0;
+    z-index: 50;
 
     &:hover {
-      opacity: 1;
+      opacity: 1!important;
       cursor: col-resize;
     }
   }
@@ -68,9 +74,10 @@
     height: 4px;
     background: $primaryColor;
     opacity: 0;
-
+    z-index: 50;
+    
     &:hover {
-      opacity: 1;
+      opacity: 1!important;
       cursor: row-resize;
     }
   }
