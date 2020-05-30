@@ -19,6 +19,7 @@ function createColumn(col): string {
   return `
     <div class="column">
       ${col}
+      <div class="col_resize"></div>
     </div>
   `
 }
@@ -27,9 +28,14 @@ function createColumn(col): string {
  *
  */
 function createRow(index: string, content): string {
+  const resizer = index ? '<div class="row_resize"></div>' : ''
+
   return `
     <div class="row">
-      <div class="row_info">${index ? index : ''}</div>
+      <div class="row_info">
+        ${index ? index : ''}
+        ${resizer}
+      </div>
       <div class="row_data">${content}</div>
     </div>
   `
