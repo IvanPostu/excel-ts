@@ -5,11 +5,11 @@
  */
 
 class Dom {
-  private $el: Element
+  public $el: HTMLElement
 
   constructor(selector?: string | Element) {
     if (selector) {
-      this.$el = selector as Element
+      this.$el = selector as HTMLElement
     }
     if (selector && typeof selector === 'string') {
       this.$el = document.querySelector(selector)
@@ -47,6 +47,22 @@ class Dom {
 
   off(eventType: string, callback: () => void) {
     this.$el.removeEventListener(eventType, callback)
+  }
+
+  closest(selector) {
+    return $(this.$el.closest(selector))
+  }
+
+  getCords() {
+    return this.$el.getBoundingClientRect()
+  }
+
+  get data() {
+    return this.$el.dataset
+  }
+
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector)
   }
 }
 
