@@ -70,7 +70,7 @@ export class Table extends Component {
   constructor($root, options) {
     super($root, {
       name: 'Table',
-      listeners: ['mousedown', 'keydown'],
+      listeners: ['mousedown', 'keydown', 'input'],
       ...options,
     })
   }
@@ -84,9 +84,14 @@ export class Table extends Component {
 
     const $cell = this.$root.findOne('[data-id="0:0"]')
     this.selection.select($cell)
+    this.$emit('table:select', $cell)
 
     this.$on('formula:working', (text) => {
       this.selection.current.text(text)
+    })
+
+    this.$on('formula:done', () => {
+      this.selection.current.focus()
     })
   }
 
@@ -122,7 +127,12 @@ export class Table extends Component {
       const cellId = this.selection.current.tableDataId(true)
       const $next = this.$root.findOne(nextSelector(key, cellId))
       this.selection.select($next)
+      this.$emit('table:select', $next)
     }
+  }
+
+  onInput(event) {
+    this.$emit('table:input', $(event.target))
   }
 
   toHTML(): string {

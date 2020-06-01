@@ -1,23 +1,39 @@
 import { Component } from '@/core/Component'
+import $, { AppNode } from '@/core'
 
 export class Formula extends Component {
   static className = 'excel__formula'
+  private $formula: AppNode
 
   constructor($root, options) {
     super($root, {
       name: 'Formula',
-      listeners: ['input', 'click'],
+      listeners: ['input', 'keydown'],
       ...options,
     })
   }
 
-  onInput(event): void {
-    const text = event.target.textContent.trim()
-    this.$emit('formula:working', text)
+  init() {
+    super.init()
+    this.$formula = this.$root.findOne('#formula')
+    this.$on('table:select', ($cell) => {
+      this.$formula.text($cell.text())
+    })
+    this.$on('table:input', ($cell) => {
+      this.$formula.text($cell.text())
+    })
   }
 
-  onClick(event: MouseEvent) {
-    console.log('click: ', event)
+  onInput(event): void {
+    this.$emit('formula:working', $(event.target).text())
+  }
+
+  onKeydown(event: KeyboardEvent) {
+    const keys = ['Enter', 'Tab']
+    if (keys.includes(event.key)) {
+      event.preventDefault()
+      this.$emit('formula:done')
+    }
   }
 
   toHTML() {
@@ -25,7 +41,7 @@ export class Formula extends Component {
     <div class="formula_info">
       fx
     </div>
-    <div class="formula_input" contenteditable="true" spellcheck="false"></div>
+    <div id="formula" class="formula_input" contenteditable="true" spellcheck="false"></div>
     `
   }
 }

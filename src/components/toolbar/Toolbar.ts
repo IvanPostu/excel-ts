@@ -9,13 +9,8 @@ export class Toolbar extends Component {
   constructor($root, options) {
     super($root, {
       name: 'Toolbar',
-      listeners: ['click'],
       ...options,
     })
-  }
-
-  onClick() {
-    console.log('click event')
   }
 
   toHTML(): string {
