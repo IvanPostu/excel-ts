@@ -6,7 +6,10 @@ export class Component extends DomListener {
   constructor($root, options = {} as any) {
     super($root, options.listeners)
     this.name = options.name || ''
+    this.prepare()
   }
+
+  prepare(): void {}
 
   init(): void {
     this.initDOMListeners()

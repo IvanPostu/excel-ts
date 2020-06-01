@@ -1,10 +1,10 @@
-import { $ } from '@/core/dom'
+import $, { AppNode } from '@/core'
 
 export class Excel {
   /**
    *
    */
-  private $el: ReturnType<typeof $>
+  private $el: AppNode
   private components: Array<any>
 
   constructor(selector: string, options: any) {
@@ -12,16 +12,12 @@ export class Excel {
     this.components = options.components || []
   }
 
-  getRoot(): ReturnType<typeof $> {
+  getRoot(): AppNode {
     const $root = $.create('div', ['excel'])
 
     this.components = this.components.map((componecomponentClass) => {
       const $el = $.create('div', [componecomponentClass.className])
       const component = new componecomponentClass($el)
-
-      // if (component.name) {
-      //   window['aaas'] = component
-      // }
 
       $el.html(component.toHTML())
       $root.append($el)
