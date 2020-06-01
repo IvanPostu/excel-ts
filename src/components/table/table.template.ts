@@ -6,10 +6,18 @@ const CODES = {
 /**
  *
  */
-function createCell(_, colIndex: number): string {
-  return `
-    <div class="cell" contenteditable="true" data-col="${colIndex}"></div>
-  `
+function createCell(row: number): (_, col) => string {
+  return function (_, col) {
+    return `
+      <div
+        class="cell"
+        contenteditable="true"
+        data-type="cell"
+        data-col="${col}"
+        data-id="${`${row}:${col}`}">
+      </div>
+    `
+  }
 }
 
 /**
@@ -55,7 +63,7 @@ export function createTable(rowsCount = 15) {
   rows.push(createRow('', cols))
 
   for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsCount).fill('').map(createCell).join('')
+    const cells = new Array(colsCount).fill('').map(createCell(i)).join('')
     rows.push(createRow(String(i + 1), cells))
   }
 

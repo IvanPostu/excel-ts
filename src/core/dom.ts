@@ -4,16 +4,17 @@
  *
  */
 
-class Dom {
-  public $el: HTMLElement
+class Dom<K extends keyof HTMLElementTagNameMap> {
+  public $el: HTMLElementTagNameMap[K]
 
-  constructor(selector?: string | Element) {
-    if (selector) {
-      this.$el = selector as HTMLElement
+  constructor(selector?: string | HTMLElementTagNameMap[K]) {
+    if (selector && typeof selector !== 'string') {
+      this.$el = selector as HTMLElementTagNameMap[K]
     }
     if (selector && typeof selector === 'string') {
       this.$el = document.querySelector(selector)
     }
+    // const z = document.createElement('input')
   }
 
   html(html?: string) {
@@ -24,13 +25,24 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
+  text(text?: string) {
+    if (text) {
+      this.$el.textContent = text
+      return this
+    }
+    if (this.$el.tagName.toLowerCase() === 'input') {
+      return (this.$el as HTMLInputElement).value.trim()
+    }
+    return this.$el.textContent
+  }
+
   clear() {
     this.html('')
     return this
   }
 
-  append(node: Dom | Element) {
-    let elm: Element
+  append<K extends keyof HTMLElementTagNameMap>(node: Dom<K> | HTMLElementTagNameMap[K]) {
+    let elm: HTMLElementTagNameMap[K]
     if (node instanceof Dom) {
       elm = node.$el
     } else {
@@ -65,22 +77,58 @@ class Dom {
     return this.$el.querySelectorAll(selector)
   }
 
+  findOne(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
   css(styles = {}) {
     Object.entries(styles).forEach(([key, val]) => (this.$el.style[key] = val))
+  }
+
+  addClass(className: string) {
+    this.$el.classList.add(className)
+    return this
+  }
+
+  removeClass(className: string) {
+    this.$el.classList.remove(className)
+    return this
+  }
+
+  tableDataId(parse?: boolean) {
+    if (parse) {
+      const id = this.tableDataId()
+      const [row, col] = id.split(':')
+      return {
+        row: Number(row),
+        col: Number(col),
+      }
+    }
+    return this.data.id
+  }
+
+  focus() {
+    this.$el.focus()
+    return this
   }
 }
 
 /**
  *
  */
-export function $(selector: string | Element): Dom {
+export function $<K extends keyof HTMLElementTagNameMap>(
+  selector: HTMLElementTagNameMap[K] | string,
+): Dom<K> {
   return new Dom(selector)
 }
 
 /**
  *  Create node with class properties.
  */
-$.create = function (tagName: string, classes: Array<string>): Dom {
+$.create = function <K extends keyof HTMLElementTagNameMap>(
+  tagName: K,
+  classes: Array<string>,
+): Dom<K> {
   const el = document.createElement(tagName)
   if (classes.length) {
     el.classList.add(classes.join(' '))

@@ -3,6 +3,16 @@ import { Component } from '@/core/Component'
 export class Toolbar extends Component {
   static className = 'excel__toolbar'
 
+  /**
+   *
+   */
+  constructor($root, options) {
+    super($root, {
+      name: 'Toolbar',
+      ...options,
+    })
+  }
+
   toHTML(): string {
     return `
       <div class="button">
