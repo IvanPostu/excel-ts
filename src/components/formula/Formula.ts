@@ -3,15 +3,17 @@ import { Component } from '@/core/Component'
 export class Formula extends Component {
   static className = 'excel__formula'
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'click'],
+      ...options,
     })
   }
 
   onInput(event): void {
-    console.log(`formula event: ${event.target.textContent.trim()}`)
+    const text = event.target.textContent.trim()
+    this.$emit('formula:working', text)
   }
 
   onClick(event: MouseEvent) {

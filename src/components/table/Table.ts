@@ -63,12 +63,15 @@ export class Table extends Component {
   static className = 'excel__table'
 
   private selection: TableSelection
+
   /**
    *
    */
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
+      name: 'Table',
       listeners: ['mousedown', 'keydown'],
+      ...options,
     })
   }
 
@@ -81,6 +84,10 @@ export class Table extends Component {
 
     const $cell = this.$root.findOne('[data-id="0:0"]')
     this.selection.select($cell)
+
+    this.$on('formula:working', (text) => {
+      this.selection.current.text(text)
+    })
   }
 
   onMousedown(event): void {

@@ -24,6 +24,10 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
+  text(text: string): void {
+    this.$el.textContent = text
+  }
+
   clear() {
     this.html('')
     return this
