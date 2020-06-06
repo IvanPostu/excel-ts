@@ -3,13 +3,19 @@ const CODES = {
   Z: 90,
 }
 
+const DEFAULT_WIDTH = 140
+const DEFAULT_HEIGHT = 24
+
 /**
  *
  */
-function createCell(row: number): (_, col) => string {
+function createCell(state: any, row: number): (_, col) => string {
   return function (_, col) {
+    const width = state.colState[col] || DEFAULT_WIDTH
+
     return `
       <div
+        style="width: ${width}px; "
         class="cell"
         contenteditable="true"
         data-type="cell"
@@ -23,9 +29,9 @@ function createCell(row: number): (_, col) => string {
 /**
  *
  */
-function createColumn(col, index): string {
+function createColumn(col, index, width: string): string {
   return `
-    <div class="column" data-type="resizable" data-col="${index}">
+    <div class="column" style="width: ${width}px;" data-type="resizable" data-col="${index}">
       ${col}
       <div class="col_resize" data-resize="col"></div>
     </div>
@@ -35,11 +41,12 @@ function createColumn(col, index): string {
 /**
  *
  */
-function createRow(index: string, content): string {
+function createRow(index: string, content, rowState: any): string {
   const resizer = index ? `<div class="row_resize" data-resize="row"></div>` : ''
+  const height = rowState[index] || DEFAULT_HEIGHT
 
   return `
-    <div class="row" data-type="resizable">
+    <div style="height: ${height}px;" class="row" data-type="resizable" data-row="${index}">
       <div class="row_info">
         ${index ? index : ''}
         ${resizer}
@@ -53,18 +60,22 @@ function createRow(index: string, content): string {
  *
  * @param rowsCount
  */
-export function createTable(rowsCount = 15) {
+export function createTable(rowsCount = 15, state: any = {}) {
   const colsCount = CODES.Z - CODES.A + 1
   const rows = []
   const cols = new Array(colsCount)
     .fill('')
-    .map((a, i) => createColumn(String.fromCharCode(CODES.A + i), i))
+    .map((a, i) => {
+      const width = state.colState[i] || DEFAULT_WIDTH
+
+      return createColumn(String.fromCharCode(CODES.A + i), i, width)
+    })
     .join('')
-  rows.push(createRow('', cols))
+  rows.push(createRow('', cols, {}))
 
   for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsCount).fill('').map(createCell(i)).join('')
-    rows.push(createRow(String(i + 1), cells))
+    const cells = new Array(colsCount).fill('').map(createCell(state, i)).join('')
+    rows.push(createRow(String(i + 1), cells, state.rowState))
   }
 
   return rows.join('')

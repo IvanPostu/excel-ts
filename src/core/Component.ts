@@ -5,11 +5,15 @@ export class Component extends DomListener {
   public name: string
   protected emitter: Emitter
   private unsubscribers = []
+  protected store: any
+  private storeSub: any
 
   constructor($root, options = {} as any) {
     super($root, options.listeners)
     this.name = options.name || ''
     this.emitter = options.emitter
+    this.store = options.store
+    this.storeSub = null
     this.prepare()
   }
 
@@ -28,9 +32,18 @@ export class Component extends DomListener {
     this.unsubscribers.push(unsub)
   }
 
+  $dispatch(action) {
+    this.store.dispatch(action)
+  }
+
+  $subscribe(fn: CallableFunction) {
+    this.storeSub = this.store.subscribe(fn)
+  }
+
   destroy(): void {
     this.removeDOMListeners()
     this.unsubscribers.forEach((unsub) => unsub())
+    this.storeSub.unsubscribe()
   }
 
   toHTML(): string {
