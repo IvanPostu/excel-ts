@@ -1,8 +1,15 @@
-import { TABLE_RESIZE } from '@/redux/types'
+import * as T from '@/redux/types'
 
 export function tableResize(data) {
   return {
-    type: TABLE_RESIZE,
+    type: T.TABLE_RESIZE,
+    data,
+  }
+}
+
+export function changeText(data: any) {
+  return {
+    type: T.CHANGE_TEXT,
     data,
   }
 }

@@ -6,14 +6,16 @@ export class Component extends DomListener {
   protected emitter: Emitter
   private unsubscribers = []
   protected store: any
-  private storeSub: any
+  private subscribe: Array<string>
+  // private storeSub: any
 
   constructor($root, options = {} as any) {
     super($root, options.listeners)
     this.name = options.name || ''
     this.emitter = options.emitter
     this.store = options.store
-    this.storeSub = null
+    this.subscribe = options.subscribe || []
+    // this.storeSub = null
     this.prepare()
   }
 
@@ -36,14 +38,16 @@ export class Component extends DomListener {
     this.store.dispatch(action)
   }
 
-  $subscribe(fn: CallableFunction) {
-    this.storeSub = this.store.subscribe(fn)
-  }
+  storeChanged(a) {}
+
+  // $subscribe(fn: CallableFunction) {
+  //   this.storeSub = this.store.subscribe(fn)
+  // }
 
   destroy(): void {
     this.removeDOMListeners()
     this.unsubscribers.forEach((unsub) => unsub())
-    this.storeSub.unsubscribe()
+    // this.storeSub.unsubscribe()
   }
 
   toHTML(): string {

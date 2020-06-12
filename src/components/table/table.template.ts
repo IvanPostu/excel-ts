@@ -12,6 +12,8 @@ const DEFAULT_HEIGHT = 24
 function createCell(state: any, row: number): (_, col) => string {
   return function (_, col) {
     const width = state.colState[col] || DEFAULT_WIDTH
+    const id = `${row}:${col}`
+    const data = state.dataState[id]
 
     return `
       <div
@@ -20,7 +22,8 @@ function createCell(state: any, row: number): (_, col) => string {
         contenteditable="true"
         data-type="cell"
         data-col="${col}"
-        data-id="${`${row}:${col}`}">
+        data-id="${id}">
+        ${data || ''}
       </div>
     `
   }

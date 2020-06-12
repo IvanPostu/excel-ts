@@ -25,7 +25,7 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     return this.$el.outerHTML.trim()
   }
 
-  text(text?: string) {
+  text(text?: string): string | any {
     if (text) {
       this.$el.textContent = text
       return this

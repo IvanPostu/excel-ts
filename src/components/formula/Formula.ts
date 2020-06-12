@@ -9,6 +9,7 @@ export class Formula extends Component {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
+      subscribe: ['currentText'],
       ...options,
     })
   }
@@ -19,13 +20,21 @@ export class Formula extends Component {
     this.$on('table:select', ($cell) => {
       this.$formula.text($cell.text())
     })
-    this.$on('table:input', ($cell) => {
-      this.$formula.text($cell.text())
-    })
+    // this.$on('table:input', ($cell) => {
+    //   this.$formula.text($cell.text())
+    // })
+
+    // this.$subscribe((state) => {
+    //   this.$formula.text(state.currentText)
+    // })
   }
 
   onInput(event): void {
-    this.$emit('formula:working', $(event.target).text())
+    this.$emit('formula:input', $(event.target).text())
+  }
+
+  storeChanged({ currentText }) {
+    this.$formula.text(currentText)
   }
 
   onKeydown(event: KeyboardEvent) {

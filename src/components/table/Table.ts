@@ -3,7 +3,7 @@ import { createTable } from './table.template'
 import { resizeHandler } from '@/components/table/table.resize'
 import { TableSelection } from '@/components/table/TableSelection'
 import { $ } from '@/core/dom'
-import { tableResize } from '@/redux/actionCreators'
+import * as actions from '@/redux/actionCreators'
 
 /**
  *
@@ -90,26 +90,25 @@ export class Table extends Component {
 
     const $cell = this.$root.findOne('[data-id="0:0"]')
     this.selectCell($cell)
-    // this.selection.select($cell)
-    // this.$emit('table:select', $cell)
 
-    this.$on('formula:working', (text) => {
+    this.$on('formula:input', (text) => {
       this.selection.current.text(text)
+      this.updateTextInStore(text)
     })
 
     this.$on('formula:done', () => {
       this.selection.current.focus()
     })
 
-    this.$subscribe((state) => {
-      console.log('TabState: ', state)
-    })
+    // this.$subscribe((state) => {
+    //   console.log('TabState: ', state)
+    // })
   }
 
   async resizeTable(event) {
     try {
       const data = await resizeHandler.call(this, event)
-      this.$dispatch(tableResize(data))
+      this.$dispatch(actions.tableResize(data))
     } catch (error) {
       console.warn(error.message)
     }
@@ -153,8 +152,24 @@ export class Table extends Component {
     }
   }
 
+  updateTextInStore(value) {
+    this.$dispatch(
+      actions.changeText({
+        id: this.selection.current.tableDataId(),
+        value,
+      }),
+    )
+  }
+
   onInput(event) {
-    this.$emit('table:input', $(event.target))
+    this.updateTextInStore($(event.target).text())
+    // this.$emit('table:input', $(event.target))
+    // this.$dispatch(
+    //   actions.changeText({
+    //     id: this.selection.current.tableDataId(),
+    //     value: $(event.target).text(),
+    //   }),
+    // )
   }
 
   toHTML(): string {
