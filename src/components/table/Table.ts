@@ -185,6 +185,6 @@ export class Table extends Component {
   }
 
   toHTML(): string {
-    return createTable(10, this.store.getState())
+    return createTable(30, this.store.getState())
   }
 }

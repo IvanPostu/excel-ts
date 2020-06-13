@@ -5,14 +5,12 @@ export class Excel {
   /**
    *
    */
-  private $el: AppNode
   private components: Array<any>
   private emitter: Emitter
   private store: any
   private subscriber: StoreSubscriber
 
-  constructor(selector: string, options: any) {
-    this.$el = $(selector)
+  constructor(options: any) {
     this.components = options.components || []
     this.emitter = new Emitter()
     this.store = options.store
@@ -38,8 +36,7 @@ export class Excel {
     return $root
   }
 
-  render(): void {
-    this.$el.append(this.getRoot())
+  init(): void {
     this.subscriber.subscribeComponents(this.components)
     this.components.forEach((component) => component.init())
   }
