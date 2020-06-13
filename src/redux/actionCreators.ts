@@ -13,3 +13,25 @@ export function changeText(data: any) {
     data,
   }
 }
+
+export function changeStyles(data) {
+  return {
+    type: T.CHANGE_STYLES,
+    data,
+  }
+}
+
+//value, ids
+export function applyStyle(data) {
+  return {
+    type: T.APPLY_STYLE,
+    data,
+  }
+}
+
+export function changeTitle(data) {
+  return {
+    type: T.CHANGE_TITLE,
+    data,
+  }
+}

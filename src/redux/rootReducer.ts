@@ -1,21 +1,41 @@
 import * as T from '@/redux/types'
+import toInlineStyles from '@/utils/toInlineStyles'
+
+function value(state, field, action) {
+  const val = state[field] || {}
+  val[action.data.id] = action.data.value
+  return val
+}
 
 export function rootReducer(state, action) {
-  let prevState
-  let field
+  let field: string
+  let val
   switch (action.type) {
     case T.TABLE_RESIZE:
       field = action.data.type === 'col' ? 'colState' : 'rowState'
-      prevState = state[field] || {}
-      prevState[action.data.id] = action.data.value
       return {
         ...state,
-        [field]: prevState,
+        [field]: value(state, field, action),
       }
     case T.CHANGE_TEXT:
-      prevState = state['dataState'] || {}
-      prevState[action.data.id] = action.data.value
-      return { ...state, currentText: action.data.value, dataState: prevState }
+      field = 'dataState'
+      return { ...state, currentText: action.data.value, [field]: value(state, field, action) }
+    case T.CHANGE_STYLES:
+      return { ...state, currentStyles: action.data }
+    case T.APPLY_STYLE:
+      field = 'stylesState'
+      val = state[field] || {}
+      action.data.ids.forEach((id) => {
+        val[id] = { ...val[id], ...action.data.value }
+      })
+      return {
+        ...state,
+        [field]: val,
+        currentStyles: { ...state.currentStyles, ...action.data.value },
+      }
+    case T.CHANGE_TITLE:
+      return { ...state, title: action.data }
+
     default:
       return state
   }

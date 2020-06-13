@@ -18,7 +18,7 @@ export class Formula extends Component {
     super.init()
     this.$formula = this.$root.findOne('#formula')
     this.$on('table:select', ($cell) => {
-      this.$formula.text($cell.text())
+      this.$formula.text($cell.data.value)
     })
     // this.$on('table:input', ($cell) => {
     //   this.$formula.text($cell.text())

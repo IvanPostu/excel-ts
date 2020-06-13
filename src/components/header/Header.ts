@@ -1,4 +1,8 @@
 import { Component } from '@/core/Component'
+import { changeTitle } from '@/redux/actionCreators'
+import $ from '@/core'
+import { defaultTitle } from '@/components/constants'
+import debounce from '@/utils/debounceFunction'
 
 export class Header extends Component {
   static className = 'excel__header'
@@ -9,13 +13,25 @@ export class Header extends Component {
   constructor($root, options) {
     super($root, {
       name: 'Header',
+      listeners: ['input'],
       ...options,
     })
   }
 
+  prepare() {
+    this.onInput = debounce(this.onInput, 330)
+  }
+
+  onInput(event) {
+    const $target = $(event.target)
+    this.$dispatch(changeTitle($target.text()))
+  }
+
   toHTML() {
+    const title = this.store.getState().title || defaultTitle
+
     return `
-      <input type="text" class="input" value="New Table" />
+      <input type="text" class="input" value="${title}" />
       <div>
         <div class="button">
           <i class="material-icons">delete</i>

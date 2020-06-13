@@ -4,6 +4,8 @@ import { resizeHandler } from '@/components/table/table.resize'
 import { TableSelection } from '@/components/table/TableSelection'
 import { $ } from '@/core/dom'
 import * as actions from '@/redux/actionCreators'
+import { defaultCellStyles } from '@/components/constants'
+import { parse } from '@/components/table/cellParser'
 
 /**
  *
@@ -83,6 +85,9 @@ export class Table extends Component {
   selectCell($cell) {
     this.selection.select($cell)
     this.$emit('table:select', $cell)
+    const styles = $cell.getStyles(Object.keys(defaultCellStyles))
+    // console.log(styles)
+    this.$dispatch(actions.changeStyles(styles))
   }
 
   init(): void {
@@ -91,18 +96,25 @@ export class Table extends Component {
     const $cell = this.$root.findOne('[data-id="0:0"]')
     this.selectCell($cell)
 
-    this.$on('formula:input', (text) => {
-      this.selection.current.text(text)
-      this.updateTextInStore(text)
+    this.$on('formula:input', (value) => {
+      this.selection.current.attr('data-value', value)
+      this.selection.current.text(parse(value))
+      this.updateTextInStore(value)
     })
 
     this.$on('formula:done', () => {
       this.selection.current.focus()
     })
 
-    // this.$subscribe((state) => {
-    //   console.log('TabState: ', state)
-    // })
+    this.$on('toolbar:applyStyle', (value) => {
+      this.selection.applyStyle(value)
+      this.$dispatch(
+        actions.applyStyle({
+          value,
+          ids: this.selection.selectedIds,
+        }),
+      )
+    })
   }
 
   async resizeTable(event) {

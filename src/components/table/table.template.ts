@@ -1,3 +1,7 @@
+import { defaultCellStyles } from '@/components/constants'
+import toInlineStyles from '@/utils/toInlineStyles'
+import { parse } from '@/components/table/cellParser'
+
 const CODES = {
   A: 65,
   Z: 90,
@@ -14,16 +18,21 @@ function createCell(state: any, row: number): (_, col) => string {
     const width = state.colState[col] || DEFAULT_WIDTH
     const id = `${row}:${col}`
     const data = state.dataState[id]
+    const styles = toInlineStyles({
+      ...defaultCellStyles,
+      ...state.stylesState[id],
+    })
 
     return `
       <div
-        style="width: ${width}px; "
+        style="${styles}; width: ${width}px; "
         class="cell"
         contenteditable="true"
         data-type="cell"
         data-col="${col}"
-        data-id="${id}">
-        ${data || ''}
+        data-id="${id}"
+        data-value="${data || ''}">
+        ${parse(data) || ''}
       </div>
     `
   }
