@@ -5,12 +5,14 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
-const isDevelopment = !isProduction
+const isDevelopment = process.env.NODE_ENV === 'development'
 
 module.exports =  () => {
-  if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'development'){
-    throw new Error('Please, set NODE_ENV variable!!!')
+  if((isProduction && isDevelopment) || (!isProduction && !isDevelopment)){
+    throw new Error('Please, set valid NODE_ENV variable!!!')
   }
+
+  console.log(`Project is running in ${process.env.NODE_ENV} mode.`)
 
   return {
     context: path.resolve(__dirname, 'src'),
