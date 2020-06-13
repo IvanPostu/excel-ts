@@ -31,7 +31,15 @@ export class TableSelection {
     this.group = []
   }
 
+  get selectedIds() {
+    return this.group.map(($el) => $el.tableDataId())
+  }
+
   get current(): ReturnType<typeof $> {
     return this._current
+  }
+
+  applyStyle(style) {
+    this.group.forEach(($el) => $el.css(style))
   }
 }

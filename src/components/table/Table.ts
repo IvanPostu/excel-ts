@@ -3,6 +3,9 @@ import { createTable } from './table.template'
 import { resizeHandler } from '@/components/table/table.resize'
 import { TableSelection } from '@/components/table/TableSelection'
 import { $ } from '@/core/dom'
+import * as actions from '@/redux/actionCreators'
+import { defaultCellStyles } from '@/components/constants'
+import { parse } from '@/components/table/cellParser'
 
 /**
  *
@@ -79,20 +82,48 @@ export class Table extends Component {
     this.selection = new TableSelection()
   }
 
+  selectCell($cell) {
+    this.selection.select($cell)
+    this.$emit('table:select', $cell)
+    const styles = $cell.getStyles(Object.keys(defaultCellStyles))
+    // console.log(styles)
+    this.$dispatch(actions.changeStyles(styles))
+  }
+
   init(): void {
     super.init()
 
     const $cell = this.$root.findOne('[data-id="0:0"]')
-    this.selection.select($cell)
-    this.$emit('table:select', $cell)
+    this.selectCell($cell)
 
-    this.$on('formula:working', (text) => {
-      this.selection.current.text(text)
+    this.$on('formula:input', (value) => {
+      this.selection.current.attr('data-value', value)
+      this.selection.current.text(parse(value))
+      this.updateTextInStore(value)
     })
 
     this.$on('formula:done', () => {
       this.selection.current.focus()
     })
+
+    this.$on('toolbar:applyStyle', (value) => {
+      this.selection.applyStyle(value)
+      this.$dispatch(
+        actions.applyStyle({
+          value,
+          ids: this.selection.selectedIds,
+        }),
+      )
+    })
+  }
+
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler.call(this, event)
+      this.$dispatch(actions.tableResize(data))
+    } catch (error) {
+      console.warn(error.message)
+    }
   }
 
   onMousedown(event): void {
@@ -100,7 +131,7 @@ export class Table extends Component {
     const isCell = event.target.dataset.type === 'cell'
     const $target = $(event.target)
     if (shouldResize) {
-      resizeHandler.call(this, event)
+      this.resizeTable(event)
     } else if (isCell) {
       if (event.shiftKey) {
         const target = $target.tableDataId(true)
@@ -114,7 +145,8 @@ export class Table extends Component {
         ).map((dataId) => this.$root.findOne(`[data-id="${dataId}"]`))
         this.selection.selectGroup($cells)
       } else {
-        this.selection.select($target)
+        // this.selection.select($target)
+        this.selectCell($target)
       }
     }
   }
@@ -126,16 +158,33 @@ export class Table extends Component {
       event.preventDefault()
       const cellId = this.selection.current.tableDataId(true)
       const $next = this.$root.findOne(nextSelector(key, cellId))
-      this.selection.select($next)
-      this.$emit('table:select', $next)
+      this.selectCell($next)
+      // this.selection.select($next)
+      // this.$emit('table:select', $next)
     }
   }
 
+  updateTextInStore(value) {
+    this.$dispatch(
+      actions.changeText({
+        id: this.selection.current.tableDataId(),
+        value,
+      }),
+    )
+  }
+
   onInput(event) {
-    this.$emit('table:input', $(event.target))
+    this.updateTextInStore($(event.target).text())
+    // this.$emit('table:input', $(event.target))
+    // this.$dispatch(
+    //   actions.changeText({
+    //     id: this.selection.current.tableDataId(),
+    //     value: $(event.target).text(),
+    //   }),
+    // )
   }
 
   toHTML(): string {
-    return createTable(10)
+    return createTable(10, this.store.getState())
   }
 }

@@ -25,7 +25,7 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     return this.$el.outerHTML.trim()
   }
 
-  text(text?: string) {
+  text(text?: string): string | any {
     if (text) {
       this.$el.textContent = text
       return this
@@ -85,9 +85,25 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     Object.entries(styles).forEach(([key, val]) => (this.$el.style[key] = val))
   }
 
+  getStyles(styles = []) {
+    return styles.reduce((acc, s) => {
+      acc[s] = this.$el.style[s]
+      return acc
+    }, {})
+  }
+
   addClass(className: string) {
     this.$el.classList.add(className)
     return this
+  }
+
+  attr(name: string, value?: string): any {
+    if (value) {
+      this.$el.setAttribute(name, value)
+      return this
+    }
+
+    return this.$el.getAttribute(name)
   }
 
   removeClass(className: string) {
