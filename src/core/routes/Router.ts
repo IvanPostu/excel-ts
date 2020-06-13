@@ -1,8 +1,10 @@
-import $ from '@/core'
+import $, { AppNode } from '@/core'
+import { ActiveRoute } from '@/core/routes/ActiveRoute'
 
 export class Router {
-  private $placeholder
+  private $placeholder: AppNode
   private routes
+  private page
 
   constructor(selector: string, routes: any) {
     if (!selector) {
@@ -11,6 +13,7 @@ export class Router {
 
     this.$placeholder = $(selector)
     this.routes = routes
+    this.page = null
 
     this.changePageHandler = this.changePageHandler.bind(this)
     this.init()
@@ -22,10 +25,17 @@ export class Router {
   }
 
   changePageHandler() {
-    const PageClass = this.routes.excel
-    const page = new PageClass()
-    this.$placeholder.append(page.getRoot())
-    page.afterRender()
+    if (this.page) {
+      this.page.destroy()
+    }
+
+    this.$placeholder.clear()
+    const PageClass = ActiveRoute.path.includes('excel') ? this.routes.excel : this.routes.dashboard
+
+    this.page = new PageClass(ActiveRoute.param)
+    this.$placeholder.append(this.page.getRoot())
+
+    this.page.afterRender()
   }
 
   destroy() {

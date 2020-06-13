@@ -18,7 +18,7 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
   }
 
   html(html?: string) {
-    if (html) {
+    if (html || html === '') {
       this.$el.innerHTML = html
       return this
     }

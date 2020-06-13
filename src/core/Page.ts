@@ -1,5 +1,5 @@
 export class Page {
-  private params
+  protected params
 
   constructor(params) {
     this.params = params
