@@ -1,5 +1,4 @@
 import * as T from '@/redux/types'
-import toInlineStyles from '@/utils/toInlineStyles'
 
 function value(state, field, action) {
   const val = state[field] || {}

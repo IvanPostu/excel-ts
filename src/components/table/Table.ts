@@ -86,7 +86,6 @@ export class Table extends Component {
     this.selection.select($cell)
     this.$emit('table:select', $cell)
     const styles = $cell.getStyles(Object.keys(defaultCellStyles))
-    // console.log(styles)
     this.$dispatch(actions.changeStyles(styles))
   }
 

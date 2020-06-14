@@ -33,8 +33,8 @@ describe('Router module: ', () => {
     expect(router).toBeDefined()
   })
 
-  test('should render dashboard page', () => {
-    router.changePageHandler()
+  test('should render dashboard page', async () => {
+    await router.changePageHandler()
     expect($root.innerHTML).toBe('<div>dashboard</div>')
   })
 })
