@@ -11,7 +11,7 @@ import { normalizeInitialstate } from '@/redux/initialState'
 import debounce from '@/utils/debounceFunction'
 
 function storageName(param) {
-  return 'excel:' + param
+  return 'excel:' + param[1]
 }
 
 class StateProcessor {
