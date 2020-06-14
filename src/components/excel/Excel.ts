@@ -1,5 +1,6 @@
 import $, { AppNode, Emitter } from '@/core'
 import { StoreSubscriber } from '@/core/StoreSubscriber'
+import { updateDate } from '@/redux/actionCreators'
 
 export class Excel {
   /**
@@ -37,11 +38,12 @@ export class Excel {
   }
 
   init(): void {
+    this.store.dispatch(updateDate())
     this.subscriber.subscribeComponents(this.components)
     this.components.forEach((component) => component.init())
   }
 
-  destroy() {
+  destroy(): void {
     this.subscriber.unsubscribeFromStore()
     this.components.forEach((component) => component.destroy())
   }

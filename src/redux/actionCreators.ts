@@ -21,7 +21,12 @@ export function changeStyles(data) {
   }
 }
 
-//value, ids
+export function updateDate() {
+  return {
+    type: T.UPDATE_DATE,
+  }
+}
+
 export function applyStyle(data) {
   return {
     type: T.APPLY_STYLE,
