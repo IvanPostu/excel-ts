@@ -10,22 +10,69 @@ import { storage } from '@/core/storage'
 import { normalizeInitialstate } from '@/redux/initialState'
 import debounce from '@/utils/debounceFunction'
 
+function storageName(param) {
+  return 'excel:' + param
+}
+
+class StateProcessor {
+  private client
+
+  constructor(client = null, delay = 300) {
+    if (!client) throw new Error('client arg. is not defined')
+    this.listen = debounce(this.listen.bind(this), delay)
+    this.client = client
+  }
+
+  listen(state) {
+    this.client.save(state)
+  }
+
+  get() {
+    return this.client.get()
+  }
+}
+
+class LocalStorageClient {
+  private name
+
+  constructor(name) {
+    this.name = storageName(name)
+  }
+
+  save(state) {
+    storage(this.name, state)
+    return Promise.resolve()
+  }
+
+  get() {
+    return Promise.resolve(storage(this.name))
+  }
+}
+
 export class ExcelPage extends Page {
   private excel
+  private storeSub
+  private processor
 
-  getRoot() {
-    const excelParam = this.params[1] ? this.params[1] : Date.now().toString()
-    const storageName = `excel:${excelParam}`
+  constructor(param) {
+    super(param)
+    this.storeSub = null
+    this.processor = new StateProcessor(new LocalStorageClient(param))
+  }
 
-    const state = storage(storageName)
+  async getRoot() {
+    // const excelParam = this.params[1] ? this.params[1] : Date.now().toString()
+    // const storageName = `excel:${excelParam}`
+
+    // const state = storage(storageName)
+    const state = await this.processor.get()
     const store = createStore(rootReducer, normalizeInitialstate(state))
 
-    const stateListener = debounce((state) => {
-      console.log('App state: ', state)
-      storage(storageName, state)
-    }, 330)
+    // const stateListener = debounce((state) => {
+    //   storage(storageName, state)
+    // }, 330)
 
-    store.subscribe(stateListener)
+    this.storeSub = store.subscribe(this.processor.listen)
 
     this.excel = new Excel({
       components: [Header, Toolbar, Formula, Table],
@@ -41,5 +88,6 @@ export class ExcelPage extends Page {
 
   destroy() {
     this.excel.destroy()
+    this.storeSub.unsubscribe()
   }
 }

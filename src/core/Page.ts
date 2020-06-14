@@ -1,8 +1,8 @@
 export class Page {
   protected params
 
-  constructor(params) {
-    this.params = params
+  constructor(params = null) {
+    this.params = params || Date.now().toString()
   }
 
   getRoot() {
