@@ -1,4 +1,3 @@
-import { storage } from '@/core/storage'
 import { defaultCellStyles, defaultTitle } from '@/components/constants'
 
 const defaultState = {

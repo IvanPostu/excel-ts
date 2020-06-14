@@ -1,7 +1,12 @@
-export function toHTML(): string {
+import { storage } from '@/core/storage'
+
+export function toHTML(key): string {
+  const model = storage(key)
+  const id = key.split(':')[1]
+
   return `
   <li class="dashboard__record">
-    <a href="#">Table number 1</a>
+    <a href="#excel/${id}">${model.title}</a>
     <strong>11.11.2011</strong>
   </li>
   `
