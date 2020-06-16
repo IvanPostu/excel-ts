@@ -1,7 +1,6 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -36,7 +35,7 @@ module.exports =  () => {
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        template: './main/index.html',
+        template: './main/index.html', 
         minify: {
           collapseWhitespace: isProduction,
           removeComments: isProduction,
@@ -45,14 +44,6 @@ module.exports =  () => {
           removeStyleLinkTypeAttributes: isProduction,
           useShortDoctype: isProduction
         }
-      }),
-      new CopyWebpackPlugin({
-        patterns: [
-          {   
-            from: path.resolve(__dirname, 'src/main/favicon.ico'),
-            to: path.resolve(__dirname, 'dist'), 
-          },
-        ],
       }),
       new MiniCssExtractPlugin({
         filename: isProduction ? 'bundle.[contenthash].css' : 'bundle.css'
@@ -84,13 +75,13 @@ module.exports =  () => {
           ]
         },
         {
-          test: /\.(png|jpe?g|gif|ttf|woff2|woff|eot)$/i,
+          test: /\.(png|jpe?g|gif|ico|ttf|woff2|woff|eot)$/i,
           use: [
             {
               loader: 'file-loader',
             },
           ],
-        },
+        }
       ]
     }
   }
