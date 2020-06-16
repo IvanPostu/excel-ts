@@ -3,6 +3,7 @@ import { changeTitle } from '@/redux/actionCreators'
 import $ from '@/core'
 import { defaultTitle } from '@/components/constants'
 import debounce from '@/utils/debounceFunction'
+import { ActiveRoute } from '@/core/routes/ActiveRoute'
 
 export class Header extends Component {
   static className = 'excel__header'
@@ -13,7 +14,7 @@ export class Header extends Component {
   constructor($root, options) {
     super($root, {
       name: 'Header',
-      listeners: ['input'],
+      listeners: ['input', 'click'],
       ...options,
     })
   }
@@ -27,17 +28,30 @@ export class Header extends Component {
     this.$dispatch(changeTitle($target.text()))
   }
 
+  onClick(event) {
+    const $target = $(event.target)
+    if ($target.data.button === 'remove') {
+      const decision: boolean = confirm('Are you sure you want to delete this table?')
+      if (decision) {
+        localStorage.removeItem('excel:' + ActiveRoute.param[1])
+        ActiveRoute.navigate('')
+      }
+    } else if ($target.data.button === 'exit') {
+      ActiveRoute.navigate('')
+    }
+  }
+
   toHTML() {
     const title = this.store.getState().title || defaultTitle
 
     return `
       <input type="text" class="input" value="${title}" />
       <div>
-        <div class="button">
-          <i class="material-icons">delete</i>
+        <div class="button" data-button="remove">
+          <i class="material-icons" data-button="remove">delete</i>
         </div>
-        <div class="button">
-          <i class="material-icons">exit_to_app</i>
+        <div class="button" data-button="exit">
+          <i class="material-icons" data-button="exit">exit_to_app</i>
         </div>
       </div>
     `
