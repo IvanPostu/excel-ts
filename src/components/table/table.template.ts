@@ -25,7 +25,7 @@ function createCell(state: any, row: number): (_, col) => string {
 
     return `
       <div
-        style="${styles}; width: ${width}px; "
+        style="${styles} width: ${width}px; "
         class="cell"
         contenteditable="true"
         data-type="cell"

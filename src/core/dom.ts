@@ -7,6 +7,11 @@
 class Dom<K extends keyof HTMLElementTagNameMap> {
   public $el: HTMLElementTagNameMap[K]
 
+  /**
+   *
+   * @param selector can be string format ex. #id or div or .classname,
+   * in addition, there may be a html node, ex. document.createElement('div')
+   */
   constructor(selector?: string | HTMLElementTagNameMap[K]) {
     if (selector && typeof selector !== 'string') {
       this.$el = selector as HTMLElementTagNameMap[K]
@@ -14,35 +19,62 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     if (selector && typeof selector === 'string') {
       this.$el = document.querySelector(selector)
     }
-    // const z = document.createElement('input')
   }
 
-  html(html?: string) {
-    if (html) {
+  /**
+   *
+   * @param html if param is not defined this method will be getter
+   * else will be setter
+   *
+   * Set or get html to node.
+   */
+  html(html: string | null = null): Dom<K> | string {
+    if (html === null) {
+      return this.$el.outerHTML.trim()
+    } else {
       this.$el.innerHTML = html
       return this
     }
-    return this.$el.outerHTML.trim()
   }
 
-  text(text?: string): string | any {
-    if (text) {
-      this.$el.textContent = text
-      return this
-    }
+  /**
+   *
+   * @param text if param is not defined this method will be getter
+   * else will be setter.
+   *
+   * Set or get text to node.
+   *
+   * Special case for input tag, will be return value
+   */
+  text(text: string | null = null): Dom<K> | string {
     if (this.$el.tagName.toLowerCase() === 'input') {
       return (this.$el as HTMLInputElement).value.trim()
     }
-    return this.$el.textContent
+
+    if (text === null) {
+      return this.$el.textContent
+    }
+
+    this.$el.textContent = text
+    return this
   }
 
-  clear() {
+  /**
+   * Clear current AppNode.
+   */
+  clear(): Dom<K> {
     this.html('')
     return this
   }
 
-  append<K extends keyof HTMLElementTagNameMap>(node: Dom<K> | HTMLElementTagNameMap[K]) {
-    let elm: HTMLElementTagNameMap[K]
+  /**
+   *
+   * @param node type AppNode or nativeHtmlNode
+   *
+   * append clild to AppNode
+   */
+  append(node: Dom<K> | HTMLElement): Dom<K> {
+    let elm: HTMLElement
     if (node instanceof Dom) {
       elm = node.$el
     } else {
@@ -53,38 +85,81 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     return this
   }
 
-  on(eventType: string, callback: () => void) {
+  /**
+   *
+   * @param eventType
+   * @param callback
+   *
+   * Short analog for addEventListener function
+   */
+  on(eventType: string, callback: () => void): void {
     this.$el.addEventListener(eventType, callback)
   }
 
-  off(eventType: string, callback: () => void) {
+  /**
+   *
+   * @param eventType
+   * @param callback
+   *
+   * Short analog for removeEventListener function
+   */
+  off(eventType: string, callback: () => void): void {
     this.$el.removeEventListener(eventType, callback)
   }
 
-  closest(selector) {
+  /**
+   *
+   * @param selector
+   *
+   * Wrapper for closest function.
+   */
+  closest(selector): Dom<K> {
     return $(this.$el.closest(selector))
   }
 
-  getCords() {
+  /**
+   * Wrapper for getBoundingClientRect function.
+   */
+  getCords(): DOMRect {
     return this.$el.getBoundingClientRect()
   }
 
-  get data() {
+  /**
+   * Wrapper for dataset function.
+   */
+  get data(): DOMStringMap {
     return this.$el.dataset
   }
 
-  findAll(selector) {
+  /**
+   * Wrapper for querySelectorAll function.
+   */
+  findAll(selector): NodeListOf<any> {
     return this.$el.querySelectorAll(selector)
   }
 
-  findOne(selector) {
+  /**
+   * Wrapper for querySelector function.
+   */
+  findOne(selector): Dom<K> {
     return $(this.$el.querySelector(selector))
   }
 
-  css(styles = {}) {
+  /**
+   *
+   * @param styles object ex. {background-color: 'red', top: '15px'}
+   */
+  css(styles = {}): void {
     Object.entries(styles).forEach(([key, val]) => (this.$el.style[key] = val))
   }
 
+  /**
+   * accept dash-case and camelCase
+   * @param styles ex. ['backgroundColor', 'color'] return {
+   *  'backgroundColor': 'color' or '' if is not defined
+   *  'color': 'color' or '' if is not defined
+   * }
+   */
   getStyles(styles = []) {
     return styles.reduce((acc, s) => {
       acc[s] = this.$el.style[s]
@@ -92,12 +167,15 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     }, {})
   }
 
-  addClass(className: string) {
+  /**
+   * Wrapper for classList.add function.
+   */
+  addClass(className: string): Dom<K> {
     this.$el.classList.add(className)
     return this
   }
 
-  attr(name: string, value?: string): any {
+  attr(name: string, value?: string): Dom<K> | string {
     if (value) {
       this.$el.setAttribute(name, value)
       return this
@@ -106,7 +184,10 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     return this.$el.getAttribute(name)
   }
 
-  removeClass(className: string) {
+  /**
+   * Wrapper for classList.remove function.
+   */
+  removeClass(className: string): Dom<K> {
     this.$el.classList.remove(className)
     return this
   }
@@ -123,7 +204,7 @@ class Dom<K extends keyof HTMLElementTagNameMap> {
     return this.data.id
   }
 
-  focus() {
+  focus(): Dom<K> {
     this.$el.focus()
     return this
   }

@@ -86,7 +86,6 @@ export class Table extends Component {
     this.selection.select($cell)
     this.$emit('table:select', $cell)
     const styles = $cell.getStyles(Object.keys(defaultCellStyles))
-    // console.log(styles)
     this.$dispatch(actions.changeStyles(styles))
   }
 
@@ -185,6 +184,6 @@ export class Table extends Component {
   }
 
   toHTML(): string {
-    return createTable(10, this.store.getState())
+    return createTable(30, this.store.getState())
   }
 }
