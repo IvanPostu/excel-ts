@@ -4,11 +4,11 @@
   About the application: 
 </h3>
 <p style=' font-size: 15px;'>
-  Simple excel implementation using typescript and javascript.
+  Simple excel clone coded in typescript and javascript.
 </p>
 
-<b style='font-size: 18px; color: yellow;'>
-  Technology and libraries: 
+<b style='font-size: 18px;'>
+  Technologies and libraries: 
 </b>
 
 <ul>
@@ -36,7 +36,7 @@
 </ul>
 
 
-<h3 style='font-size: 18px; color: green;'>
+<h3 style='font-size: 18px;'>
   Advantages: 
 </h3>
 <ul>
@@ -51,23 +51,25 @@
   <li>Scss fully used, eg mixins, variables and functions.</li>
 </ul>
 
-<h3 style='font-size: 18px; color: red;'>
+<h3 style='font-size: 18px;'>
   Disadvantages: 
 </h3>
 <ul>
   <li>To save time, often used type "any" for variables.</li>
   <li>In some cases data is stored in the view (data attribute).</li>
-  <li>Not deployed.</li>
-  <li>Single responsibility principle ignored in some situation. </li>
-  <li>Often elsint warnings is ignored. </li>
+  <li>Single responsibility principle is ignored in some situation. </li>
+  <li>Elsint warnings are ignored often.</li>
 </ul>
 
-<h3 style='font-size: 18px; color: teal;'>
+<h3 style='font-size: 18px;'>
   Conclusion: 
 </h3>
 <p>
-Following the completion of this course, practical skills were acquired to work in the JS and TS programming language. Various technologies have been used, such as webpack, sass, jest and many more. The component-based, declarative methodology was used.
-Classes were created through which the interaction with html DOM.
+After completion this course, I've acquired practical skills,
+such as: the JS and TS programming language capabilities.
+I've used various technologies, such as webpack, sass, jest, etc.
+The component-based, declarative methodology was used.
+Classes were created through the interaction with html DOM.
 </p>
 
 ![q1](./imgs/q1.png)
